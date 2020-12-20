@@ -12,6 +12,7 @@ class Encoding {
 		this.codelist = arg.codelist||Object.keys(this.demap).sort(byLength)
 		this.matchcode = new RegExp(this.codelist.map(x=>x.replace(specialchar, '\\$&')).join("|"), 'g')
 		
+		this.hidden = arg.hidden||false
 		
 		this.url = arg.url||"#"
 		this.creator = arg.creator||arg.url||"unknown"
@@ -49,6 +50,7 @@ class Encoding {
 const data = [
 	new Encoding({
 		name: "Plaintext",	shortname: "Latin",
+		hidden: true,
 		mapping: Object.fromEntries(["a","akesi","ala","alasa","ale","ali","anpa","ante","anu","apeja","awen","e","en","epiku","esun","ete","ewe","ijo","ike","ilo","insa","itomi","jaki","jami","jan","jelo","jo","kala","kalama","kama","kamalawala","kan","kapesi","kasi","ke","ken","kepeken","kijetesantakalu","kili","kin","kipisi","kiwen","ko","kon","kule","kulupu","kuntu","kute","la","lanpan","lape","laso","lawa","leko","len","lete","li","lili","linja","linluwi","lipu","loje","lokon","lon","luka","lukin","lupa","ma","majuna","mama","mani","meli","melome","mi","mije","mijomi","misikeke","moku","moli","monsi","monsuta","mu","mulapisu","mun","musi","mute","namako","nanpa","nasa","nasin","nena","ni","nimi","noka","o","oke","okepuma","oko","olin","omen","ona","open","pa","pakala","pake","pali","palisa","pan","pana","pasila","pata","peta","peto","pi","pilin","pimeja","pini","pipi","pipo","po","poka","poki","polinpin","pomotolo","pona","powe","pu","sama","samu","seli","selo","seme","sewi","sijelo","sike","sikomo","sin","sina","sinpin","sitelen","soko","sona","soto","soweli","su","suli","suno","supa","suwi","tan","taso","tawa","te","telo","tenpo","toki","tomo","tonsi","tu","tuli","unpa","uta","utala","waleja","walo","wan","waso","wawa","wawajete","we","weka","wi","wile","yupekosi"," "].map(x=>[x,x]))
 	}),
 	new Encoding({
@@ -63,6 +65,11 @@ const data = [
 		creator: "<a href='https://sites.google.com/view/sitelenemoji'>r/sitelenEmoji</a>",
 		url: "https://raw.githubusercontent.com/devbali/desktop-sitelen-emoji/master/sitelenemoji.json",
 		mapping: {"_": "🔣", ".": "➖", ":": "➗", "a": "❗", "akesi": "🦎", "ala": "❌", "alasa": "🏹", "ale": "♾️", "ali": "♾️", "anpa": "⬇️", "ante": "🔀", "anu": "☯️", "apeja": "😢", "awen": "⚓", "e": "⏩", "en": "➕", "esun": "🛒", "ijo": "🐚", "ike": "👎", "ilo": "⚙️", "insa": "⏺️", "jaki": "💩", "jan": "👤", "jelo": "💛", "jo": "👜", "kala": "🐟", "kalama": "🔈", "kama": "🚶", "kasi": "🌴", "ken": "💪", "kepeken": "🔧", "kijetesantakalu": "🦝", "kili": "🍎", "kin": "❕", "kipisi": "✂️", "kiwen": "💎", "ko": "🍦", "kon": "💨", "kule": "🌈", "kulupu": "👥", "kute": "👂", "la": "🔼", "lape": "😴", "laso": "🔵", "lawa": "😶", "leko": "🧱", "len": "👕", "lete": "❄️", "li": "▶️", "lili": "🐭", "linja": "〰️", "linluwi": "🌐", "lipu": "📄", "loje": "🔴", "lon": "📍", "luka": "✋", "lukin": "👀", "lupa": "🕳", "ma": "🏝", "majuna": "👵", "mama": "👪", "mani": "💰", "meli": "👧", "mi": "👈", "mije": "👨", "moku": "🍽", "moli": "💀", "monsi": "⬅️", "monsuta": "👹", "mu": "😹", "mulapisu": "🍕", "mun": "🌙", "musi": "😃", "mute": "👐", "namako": "🧂", "nanpa": "#️⃣", "nasa": "🌀", "nasin": "🛣", "nena": "🗻", "ni": "👇", "nimi": "💬", "noka": "🦵", "o": "👋", "oko": "👁️", "olin": "💕", "ona": "👆", "open": "🔓", "pakala": "💥", "pake": "🚧", "pali": "✊", "palisa": "📏", "pan": "🍞", "pana": "📤", "pi": "⏹️", "pilin": "❤️", "pimeja": "⚫", "pini": "🏁", "pipi": "🐞", "poka": "↔️", "poki": "📦", "pona": "👍", "powe": "🧞", "pu": "📖", "sama": "⚖️", "seli": "🔥", "selo": "🔲", "seme": "❓", "sewi": "⬆️", "sijelo": "🏋️", "sike": "⭕", "sin": "🎁", "sina": "👉", "sinpin": "➡️", "sitelen": "🖼", "sona": "🧠", "soweli": "🐒", "suli": "🐘", "suno": "☀️", "supa": "🛏", "suwi": "🍭", "tan": "↩️", "taso": "🤔", "tawa": "↪️", "telo": "💧", "tenpo": "⏰", "toki": "🗣", "tomo": "🏠", "tonsi": "♐", "tu": "✌️", "unpa": "🍆", "uta": "👄", "utala": "⚔️", "walo": "⚪", "wan": "☝️", "waso": "🦅", "wawa": "⚡", "weka": "🛫", "wile": "💭", "epiku": "😎", "ete": "🔃", "ewe": "🌋", "itomi": "😈", "jami": "🤤", "kamalawala": "💣", "kan": "🔗", "kapesi": "🟤", "kuntu": "🤣", "lanpan": "📥", "likujo": "🧺", "lokon": "🧿", "melome": "👩‍❤️‍👩", "mijomi": "👨‍❤️‍👨", "misikeke": "💊", "oke": "👌", "okepuma": "🦖", "omen": "🙄", "pa": "🤨", "pasila": "🧘", "pata": "👯‍♀️", "peta": "🟢", "peto": "😭", "pipo": "😒", "po": "🍀", "polinpin": "🎳", "pomotolo": "📈", "samu": "✍️", "sikomo": "🤩", "soko": "🍄", "soto": "🤛", "su": "❔", "te": "🤜", "tuli": "☘️", "waleja": "ℹ️", "wawajete": "🤡", "we": "🔒", "wi": "🙋", "yupekosi": "📉"}
+	}),
+	new Encoding({
+		name: "sitelen pilin kepeken nimi Siko",
+		hidden: true,
+		mapping: {'_': ":symbols:", ".": ":heavy_minus_sign:", ":": ":heavy_division_sign:", a: ":exclamation:", akesi: ":lizard:", ala: ":x:", alasa: ":bow_and_arrow:", ale: ":infinity:", ali: ":infinity:", anpa: ":arrow_down:", ante: ":twisted_rightwards_arrows:", anu: ":yin_yang:", apeja: ":cry:", awen: ":anchor:", e: ":fast_forward:", en: ":heavy_plus_sign:", esun: ":shopping_cart:", ijo: ":shell:", ike: ":thumbsdown:", ilo: ":gear:", insa: ":record_button:", jaki: ":poop:", jan: ":bust_in_silhouette:", jelo: ":yellow_heart:", jo: ":handbag:", kala: ":fish:", kalama: ":speaker:", kama: ":person_walking:", kasi: ":palm_tree:", ken: ":muscle:", kepeken: ":wrench:", kijetesantakalu: ":raccoon:", kili: ":apple:", kin: ":grey_exclamation:", kipisi: ":scissors:", kiwen: ":gem:", ko: ":icecream:", kon: ":dash:", kule: ":rainbow:", kulupu: ":busts_in_silhouette:", kute: ":ear:", la: ":arrow_up_small:", lape: ":sleeping:", laso: ":blue_circle:", lawa: ":no_mouth:", leko: ":bricks:", len: ":shirt:", lete: ":snowflake:", li: ":arrow_forward:", lili: ":mouse:", linja: ":wavy_dash:", linluwi: ":globe_with_meridians:", lipu: ":page_facing_up:", loje: ":red_circle:", lon: ":round_pushpin:", luka: ":raised_hand:", lukin: ":eyes:", lupa: ":hole:", ma: ":island:", majuna: ":older_woman:", mama: ":family:", mani: ":moneybag:", meli: ":girl:", mi: ":point_left:", mije: ":man:", moku: ":fork_knife_plate:", moli: ":skull:", monsi: ":arrow_left:", monsuta: ":japanese_ogre:", mu: ":joy_cat:", mulapisu: ":pizza:", mun: ":crescent_moon:", musi: ":smiley:", mute: ":open_hands:", namako: ":salt:", nanpa: ":hash:", nasa: ":cyclone:", nasin: ":motorway:", nena: ":mount_fuji:", ni: ":point_down:", nimi: ":speech_balloon:", noka: ":leg:", o: ":wave:", oko: ":eye:", olin: ":two_hearts:", ona: ":point_up_2:", open: ":unlock:", pakala: ":boom:", pake: ":construction:", pali: ":fist:", palisa: ":straight_ruler:", pan: ":bread:", pana: ":outbox_tray:", pi: ":stop_button:", pilin: ":heart:", pimeja: ":black_circle:", pini: ":checkered_flag:", pipi: ":lady_beetle:", poka: ":left_right_arrow:", poki: ":package:", pona: ":thumbsup:", powe: ":genie:", pu: ":book:", sama: ":scales:", seli: ":fire:", selo: ":black_square_button:", seme: ":question:", sewi: ":arrow_up:", sijelo: ":person_lifting_weights:", sike: ":o:", sin: ":gift:", sina: ":point_right:", sinpin: ":arrow_right:", sitelen: ":frame_photo:", sona: ":brain:", soweli: ":monkey:", suli: ":elephant:", suno: ":sunny:", supa: ":bed:", suwi: ":lollipop:", tan: ":leftwards_arrow_with_hook:", taso: ":thinking:", tawa: ":arrow_right_hook:", telo: ":droplet:", tenpo: ":alarm_clock:", toki: ":speaking_head:", tomo: ":house:", tonsi: ":sagittarius:", tu: ":v:", unpa: ":eggplant:", uta: ":lips:", utala: ":crossed_swords:", walo: ":white_circle:", wan: ":point_up:", waso: ":eagle:", wawa: ":zap:", weka: ":airplane_departure:", wile: ":thought_balloon:", epiku: ":sunglasses:", ete: ":arrows_clockwise:", ewe: ":volcano:", itomi: ":smiling_imp:", jami: ":drooling_face:", kamalawala: ":bomb:", kan: ":link:", kapesi: ":brown_circle:", kuntu: ":rofl:", lanpan: ":inbox_tray:", likujo: ":basket:", lokon: ":nazar_amulet:", melome: ":couple_ww:", mijomi: ":couple_mm:", misikeke: ":pill:", oke: ":ok_hand:", okepuma: ":t_rex:", omen: ":rolling_eyes:", pa: ":face_with_raised_eyebrow:", pasila: ":person_in_lotus_position:", pata: ":women_with_bunny_ears_partying:", peta: ":green_circle:", peto: ":sob:", pipo: ":unamused:", po: ":four_leaf_clover:", polinpin: ":bowling:", pomotolo: ":chart_with_upwards_trend:", samu: ":writing_hand:", sikomo: ":star_struck:", soko: ":mushroom:", soto: ":left_facing_fist:", su: ":grey_question:", te: ":right_facing_fist:", tuli: ":shamrock:", waleja: ":information_source:", wawajete: ":clown:", we: ":lock:", wi: ":person_raising_hand:", yupekosi: ":chart_with_downwards_trend:"}
 	}),
 	new Encoding({
 		name: "sitelen Emoji pi jan Onte", //shortname: "😀2",
@@ -210,12 +217,14 @@ function generateTables(data) {
 
 	// list all words in dataset
 	wordList = []
-	data.map(corpus=>{
-		Object.keys(corpus.mapping).map(word=>{
-			if (!wordList.includes(word)) {
-				wordList.push(word)
-			}
-		})
+	data.forEach(corpus=>{
+		if (!corpus.hidden) {
+			Object.keys(corpus.mapping).forEach(word=>{
+				if (!wordList.includes(word)) {
+					wordList.push(word)
+				}
+			})
+		}
 	})
 	wordList.sort()
 	//console.log(JSON.stringify(wordList))
@@ -227,8 +236,10 @@ function generateTables(data) {
 		var word = wordList[i]
 		table[i] = [word]
 		
-		for (corpus = 1; corpus < data.length; corpus++) {
-			table[i][corpus+1] = data[corpus].mapping[word]
+		var offset = 1
+		for (let corpus = 0; corpus < data.length; corpus++) {
+			if (data[corpus].hidden) { offset-=1 }
+			else { table[i][corpus+offset] = data[corpus].mapping[word] }
 		}
 	}
 
@@ -236,18 +247,7 @@ function generateTables(data) {
 	function tableToElement(table, id, columndata) {
 		console.log(columndata)
 		var tableElement = document.getElementById(id)
-		let output = ""
-		if (columndata) {
-			output+='<colgroup>'
-			for (datum of columndata) {
-				if (datum) output+='<col '+datum+'>'
-				else output+='<col>'
-			}
-			output+='</colgroup>'
-		}
-		console.log(output)
-		
-		output+='<tbody>'
+		let output = '<tbody>'
 		for (row = 0; row < table.length; row++) {
 			output+='<tr>'
 			for (column = 0; column < table[row].length; column++) {
@@ -261,7 +261,7 @@ function generateTables(data) {
 		
 		tableElement.innerHTML = output
 	}
-	tableToElement(table, "table", ["", ...data.slice(1).map(x=>x.style)])
+	tableToElement(table, "table", data.filter(n=>!n.hidden).map(x=>x.style))
 
 
 	//make lookupsheet of unicode->tokipona
@@ -431,4 +431,4 @@ settings = {
 populateTranslateHTML()
 
 credits = document.getElementById('credits')
-data.slice(1).forEach(mapping=>credits.innerHTML+=`<div id="${mapping.name}">(${mapping.shortname}) <a href=${mapping.url}>${mapping.name}</a> made by <i>${mapping.creator}</i></div>`)
+data.forEach(mapping=>credits.innerHTML+=`<div id="${mapping.name}">(${mapping.shortname}) <a href=${mapping.url}>${mapping.name}</a> made by <i>${mapping.creator}</i></div>`)
