@@ -234,15 +234,14 @@ function generateTables(data) {
 		var word = wordList[i]
 		table[i] = [word]
 		
-		for (corpus = 0; corpus < data.length; corpus++) {
+		for (corpus = 1; corpus < data.length; corpus++) {
 			table[i][corpus+1] = data[corpus].mapping[word]
 		}
 	}
 
-	//console.log(table.map(row=>JSON.stringify(row)).join("\n"))
-
 	// convert 2d array into html table
 	function tableToElement(table, id, columndata) {
+		console.log(columndata)
 		var tableElement = document.getElementById(id)
 		let output = ""
 		if (columndata) {
@@ -256,13 +255,12 @@ function generateTables(data) {
 		console.log(output)
 		
 		output+='<tbody>'
-	//				+ table.map(row=>`<tr>${row.map(cell=><td>${cell||""}</td>`).join("")}</td>`).join("")
 		for (row = 0; row < table.length; row++) {
 			output+='<tr>'
 			for (column = 0; column < table[row].length; column++) {
-				stylehtml = ""
-				if (column && data[column-1].style) stylehtml = data[column-1].style 
-				output+=`<td style="${stylehtml}">${table[row][column]||""}</td>`
+				if (columndata && columndata[column-1]) { output += `<td style="${columndata[column-1]}">` }
+				else { output += "<td>" }
+				output+=`${table[row][column]||""}</td>`
 			}
 			output+='</tr>'
 		}
@@ -270,7 +268,7 @@ function generateTables(data) {
 		
 		tableElement.innerHTML = output
 	}
-	tableToElement(table, "table", ["", ...data.map(x=>x.style)])
+	tableToElement(table, "table", ["", ...data.slice(1).map(x=>x.style)])
 
 
 	//make lookupsheet of unicode->tokipona
@@ -291,7 +289,7 @@ function generateTables(data) {
 	}
 
 	// add column titles
-	dupeTable.unshift(["", ...data.map(set=>`<a href=#${set.name}>${set.shortname}</a>`)])
+	dupeTable.unshift(["", ...data.map(set=>`<a href="#${set.name}">${set.shortname}</a>`)])
 
 	// delete column if all empty (will also delete titles)
 	for (var corpus = data.length; corpus >= 0; corpus--) {
@@ -440,4 +438,4 @@ settings = {
 populateTranslateHTML()
 
 credits = document.getElementById('credits')
-data.slice(1).forEach(mapping=>credits.innerHTML+=`<div id=${mapping.name}>(${mapping.shortname}) <a href=${mapping.url}>${mapping.name}</a> made by <i>${mapping.creator}</i></div>`)
+data.slice(1).forEach(mapping=>credits.innerHTML+=`<div id="${mapping.name}">(${mapping.shortname}) <a href=${mapping.url}>${mapping.name}</a> made by <i>${mapping.creator}</i></div>`)
