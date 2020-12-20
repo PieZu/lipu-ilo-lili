@@ -431,4 +431,4 @@ settings = {
 populateTranslateHTML()
 
 credits = document.getElementById('credits')
-data.forEach(mapping=>credits.innerHTML+=`<div id="${mapping.name}">(${mapping.shortname}) <a href=${mapping.url}>${mapping.name}</a> made by <i>${mapping.creator}</i></div>`)
+data.forEach(mapping=>if(!mapping.hidden)credits.innerHTML+=`<div id="${mapping.name}">(${mapping.shortname}) <a href=${mapping.url}>${mapping.name}</a> made by <i>${mapping.creator}</i></div>`))
