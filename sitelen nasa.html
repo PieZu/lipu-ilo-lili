@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset = "UTF-8">
+		<title>ilo nasa</title>
+
+		<style>
+			@font-face {
+  font-family: linja-pona;
+  src: url('../linja-pona-4.1.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+.linja-pona {
+  font-family: linja-pona;
+  font-feature-settings: "liga" 1, "clig" 1, "calt" 1, "kern" 1, "mark" 1;
+  text-rendering: optimizeLegibility;
+}
+			body { 
+				font-size:50px; 
+				background-color: #112;
+				color: white;
+				margin: 20px 15px;
+			}
+			textarea {
+				font-family:arial,
+				sans-serif;
+				background-color: #444;
+				border: none;
+				color: white;
+				width: 30%;
+			}
+			textarea[disabled] {color: #ccc;}
+			div {
+				display:flex;
+				margin-top:20px;
+			}
+			h1 {margin: -20px 0;} /* undo the big font size heavy margin */
+		</style>
+	</head>
+
+	<body class="linja-pona">
+		<h1> sitelen musi </h1>
+
+		<select><option> a -> awen </option></select>
+
+		<div><label for="input">open</label><textarea id="input"></textarea></div>
+
+		<div><label for="output" >pini</label><textarea disabled id="output" class="linja-pona"></textarea></div>
+
+		<script>
+			inputElm = document.getElementById('input')
+			outputElm = document.getElementById('output')
+
+			const table = [{
+				a:"awen", b:"sina", c:"monsi", d:"alasa", e:"monsi-lon", f:"pake-lon", g:"jo", h:"tu-supa", i:"pini", j:"o-pona", k:"ken", l:"pi", m:"sijelo", n:"nena", o:"ijo", p:"mi", q:"taso-ijo", r:"waso", s:"kon", t:"pake", u:"lupa", v:"suli", w:"wile", x:"ala", y:"anu", z:"esun", '?':"seme", '>':"li", ')':"la", '!':"o", '1':"wan", '=':"sama", '+':'t'
+			}]
+			var selected = 0
+
+			function nasa(input) {
+				outputElm.value = input.toLowerCase().split('').map(x=>table[selected][x]||x).join(' ')	
+			}
+			inputElm.addEventListener('input', (e)=>nasa(e.target.value))
+
+		</script>
+	</body>
+</html>
