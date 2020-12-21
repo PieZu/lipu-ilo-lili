@@ -27,24 +27,36 @@
 				margin-top:20px;
 			}
 			h1 {margin: -20px 0;} /* undo the big font size heavy margin */
+
+			footer {
+				font-family: arial;
+				font-size: 15px;
+				position:absolute;
+				bottom:0;
+				background-color: #112;
+				padding-bottom:10px;
+			}
+			#homebtn {color: #f66;}
 		</style>
 	</head>
 
 	<body class="linja-pona">
-		<h1> sitelen musi </h1>
+		<header>
+			<h1> sitelen musi </h1>
+		</header>
 
-		<select><option> a -> awen </option></select>
+		<select><option> b -> sina </option></select>
 
-		<div><label for="input">open</label><textarea id="input"></textarea></div>
+		<div><label for="input">open</label><textarea id="input">uwu</textarea></div>
 
-		<div><label for="output" >pini</label><textarea disabled id="output" class="linja-pona"></textarea></div>
+		<div><label for="output" >pini</label><textarea disabled id="output" class="linja-pona">lupa wile lupa </textarea></div>
 
 		<script>
 			inputElm = document.getElementById('input')
 			outputElm = document.getElementById('output')
 
 			const table = [{
-				a:"awen", b:"sina", c:"monsi", d:"alasa", e:"monsi-lon", f:"pake-lon", g:"jo", h:"tu-supa", i:"pini", j:"o-pona", k:"ken", l:"pi", m:"sijelo", n:"nena", o:"ijo", p:"mi", q:"taso-ijo", r:"waso", s:"kon", t:"pake", u:"lupa", v:"suli", w:"wile", x:"ala", y:"anu", z:"esun", '?':"seme", '>':"li", ')':"la", '!':"o", '1':"wan", '=':"sama", '+':'t'
+				a:"awen", b:"sina", c:"monsi", d:"alasa", e:"monsi-lon", f:"pake-lon", g:"jo", h:"tu-supa", i:"pini", j:"o-pona", k:"ken", l:"pi", m:"sijelo", n:"nena", o:"ijo", p:"mi", q:"taso-ijo", r:"waso", s:"kon", t:"pake", u:"lupa", v:"suli", w:"wile", x:"ala", y:"anu", z:"esun", '?':"seme", '>':"li", ')':"la", '!':"o", '1':"wan", '=':"sama", '+':'en'
 			}]
 			var selected = 0
 
@@ -54,5 +66,9 @@
 			inputElm.addEventListener('input', (e)=>nasa(e.target.value))
 
 		</script>
+
+		<footer>
+			<a href="./" id="homebtn"><b class="linja-pona">tomo</b> home</span></a>
+		</footer>
 	</body>
 </html>

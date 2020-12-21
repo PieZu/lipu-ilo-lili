@@ -124,8 +124,9 @@
   	/* hide the sections when headers collapsed */
 	body>input:checked + label h1::before, body>input:checked + label h2::before { transform: rotate(-90deg); }
 	body>input:checked + label + section { position:absolute; width:0px; opacity: 0%; transform: translate(0, -100%) scaleY(0);} /* think this might still be seen for screen readers, but hey the h1s should still be anchorable right?.. also the opacity (well, mainly the scale but thats needed so u can click on the above section) makes it lagggy but it looks ugly w/o it, :shrug: */
+	
 	</style>
-<head>
+	<head>
 		<title>ilo ante</title>
 		<meta charset="utf-8">
 	
@@ -136,6 +137,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	 </head>
 	<body>
+		<a href="./" id="homebtn"><b class="linja-pona">tomo</b> home</span></a>
+
 		<input type="checkbox" id="encode">
 		<label for="encode"><h1> Encode/Decode </h1></label>
 		<section>

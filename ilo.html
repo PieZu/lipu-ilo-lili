@@ -13,6 +13,7 @@
 			tokipona {
 				font-family: linja-pona, sans-serif; 
 			}
+			#homebtn { float:right; color: #f77; }
 		</style>
 
 		<!-- <script src="./nimi pi toki pona.js"></script> -->
@@ -45,17 +46,20 @@
 					[...document.getElementsByClassName("toggledtext")].forEach(element=>element.hidden = toggle);
 
 					sheet.innerHTML = "tokipona {font-family: "+fonts[toggle*1]+";}" // *1 convertes false->0 true->1
+					document.getElementById('name').innerText = e.target.checked ? randomiseName() : 'Lile'
 				}
 			</script>
 		</main>
 
 		<footer>
-			<tokipona>jan [_<span id="name">LI_LE</span>] li mama e lipu ni</tokipona>
+			<tokipona>jan <span id="name">Lile</span> li mama e lipu ni</tokipona>
 			<english>Made by jan Lile</english>
 			<script> 
 				randItem = array=> array[Math.floor(Math.random()*array.length)]
-				document.getElementById('name').innerText = [["lili", "lape", "len", "lawa", "lipu", "lon"], ["ijo", "ilo", "ike", "insa"], ["la", "li", "linja", "lukin", "lon"], ["en", "e", "esun"]].map(randItem).join('_')
+				randomiseName = ()=>"[_"+[["lili", "lape", "len", "lawa", "lipu", "lon"], ["ijo", "ilo", "ike", "insa"], ["la", "li", "linja", "lukin", "lon"], ["en", "e", "esun"]].map(randItem).join('_')+"]"
+				document.getElementById('name').innerText = randomiseName()
 			</script>
+			<a href="./" id="homebtn"><b class="linja-pona">tomo</b> home</span></a>
 		</footer>
 
 
