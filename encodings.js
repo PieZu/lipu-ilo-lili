@@ -353,14 +353,16 @@ function detectLanguage(text) {
 }
 
 function allTranslations(e) {
-	text = interpretInput(e)
+	text = interpretInput(e).slice(0,-1)
 	poa = "<table>"
 	//poa+= "<tr><td>Latin</td><td>"+text+"</td></tr>"
-	for (dataset of data.filter(x=>x.showTrans)) {
-		poa+="<tr>"
-		poa+=`<td>${dataset.name}</td>`
-		poa+=`<td style="${dataset.style}">${dataset.encode(text).replace('\n','<br />')}</td>`
-		poa+="</tr>"
+	if (text.length>0) {
+		for (dataset of data.filter(x=>x.showTrans)) {
+			poa+="<tr>"
+			poa+=`<td>${dataset.name}</td>`
+			poa+=`<td style="${dataset.style}">${dataset.encode(text).replace('\n','<br />')}</td>`
+			poa+="</tr>"
+		}
 	}
 	poa+= "</table>"
 
