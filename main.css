@@ -6,7 +6,7 @@ english {
 	font-family: helvetica, arial, sans-serif;
 	font-size: 80%;
 	vertical-align: super;
-	color: #aaa; 
+	color: #c3bbbb; 
 }
 
 body {
@@ -90,7 +90,7 @@ main {
 
 definitiontype {
 	vertical-align: top;
-	color: #bbc;
+	color: #daa;
 	font-style: italic;
 	text-align: right;
 	width: 15%;
