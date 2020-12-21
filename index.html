@@ -6,41 +6,76 @@
 
 		<link rel="stylesheet" href="https://davidar.github.io/linja-pona/stylesheet.css">
 		<style>
+			/* layout */
 			body {
 				background-color: #112;
 				color: #fff;
-
-				font-family: linja-pona;
 				font-size: 2em;
 			}
+			a {	color: #f44; }
+			
+			h1 { text-align: center; }
 
-			main {
-				margin: 0 20% 0 30%;
-			}
+			main { margin: 0 20% 0 30%; }
+			ul { list-style: none; }
 
-			a {
-				color: #f44;
-			}
-
-			ul {
-				list-style: none;
-			}
-
-			h1 {
+			footer {
 				text-align: center;
+				border-top: 1px solid white;
+				padding-top: 30px;
+				padding-bottom: 10px;
+				background-color: #112;
+				
+				position: fixed;
+				width: 80%;
+				bottom: 0px;
+				left: 10%;
 			}
+			
+
+			/* fonts */
+			.sitelen-pona, #sitpon {font-family: linja-pona;}
+			.english, #eng {font-family: helvetica, arial, sans-serif;}
+
+			/* language switch buttons */
+			#sitpon, #eng {
+				font-size: 0.75em;
+				display: inline-block;
+				border: solid 1px white;
+				padding: 4px 10px;
+				height: 30px;
+				overflow:hidden;
+			}
+			#eng { font-size: .7em; padding: 6px 10px 2px 10px; }
+			#sitpon-btn:checked ~ footer #sitpon, #eng-btn:checked ~ footer #eng { height: 28px; border: solid 2px #f33; }
+			/* hide non-selected lang */
+			#sitpon-btn:not(:checked) ~ header .sitelen-pona, #sitpon-btn:not(:checked) ~ main .sitelen-pona, #eng-btn:not(:checked) ~ header .english, #eng-btn:not(:checked) ~ main .english { display:none; }
 		</style>
 	</head>
 
 	<body>
-		<h1>kama pona, jan suwi o</h1>
+		<input hidden type="radio" name="language" id="sitpon-btn" checked>
+		<input hidden type="radio" name="language" id="eng-btn">
 
+		<header>
+			<h1 class="sitelen-pona">kama pona, jan suwi o</h1>
+			<h1 class="english">Welcome!</h1>
+		</header>
+		
 		<main>
-			mi jan [_lipu_ilo_lili_en]
-			<p> ni li lipu mi
-			<br> mi mama e ilo pi pali toki-pona
+			<div class="sitelen-pona">
+				mi jan [_lipu_ilo_lili_en]
+				<p> ni li lipu mi
+				<br> mi mama e ilo pi pali toki-pona</p>
+			</div>
 
-			<ul><li>
+			<div class="english">
+				I'm jan Lile, and this is my site.
+				<p> I've made a few tools to help do toki pona:
+				</p>
+			</div>
+
+			<ul class="sitelen-pona"><li>
 				<a href="ilo">lipu pi-ilo-pona</a> la
 				<ul>
 					<li>sina ken sitelen kepeken sitelen pona</li>
@@ -59,6 +94,32 @@
 					<li>kon pini nena awen &nbsp;&nbsp;ken monsi-lon nena &nbsp;&nbsp;pake ijo ken pini &nbsp;&nbsp;kon awen sijelo awen &nbsp;&nbsp;nena pini
 				</ul>
 			</li></ul>
+
+			<ul class="english"><li>
+				<a href="ilo">dictionary</a>
+				<ul>
+					<li>type words in sitelen pona (heiroglyphics font)</li>
+					<li>look up the definitions of words</li>
+					<li>reverse search toki pona words from english definitions</li>
+				</ul>
+			</li><li>
+				<a href="encodings">encodings</a>
+				<ul>
+					<li>compress & decompress toki pona text</li>
+					<li>convert between an array of tp encodings</li>
+					<li>including emoji, unicode, kanji, & more</li>
+				</ul>
+			</li><li>
+				<a href="sitelen nasa">silly stuff</a>
+				<ul>
+					<li class="linja-pona">ijo wile ijo, &nbsp;&nbsp;wile tu-supa awen pake kon &nbsp;&nbsp;pake tu-supa pini kon seme</li>
+				</ul>
+			</li></ul>
 		</main>
+
+		<footer>
+			<label id="sitpon" for="sitpon-btn">toki-pona &nbsp;sitelen pona</label>
+			<label id="eng" for="eng-btn"> 🇬🇧 English</label>
+		</footer>
 	</body>
 </html>
