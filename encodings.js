@@ -299,7 +299,7 @@ function generateTables(data) {
 	//make lookupsheet of unicode->tokipona
 	var lookup = {}
 	for (corpus = 0; corpus < data.length; corpus++) {
-			if (corpus.showList) {
+		if (data[corpus].showList) {
 			Object.keys(data[corpus].mapping).map(word=>{
 				var code = data[corpus].mapping[word]
 				if (!lookup[code]) { lookup[code] = [] }
