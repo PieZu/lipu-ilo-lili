@@ -49,6 +49,7 @@
 			}
 			#eng { font-size: .7em; padding: 6px 10px 2px 10px; }
 			#sitpon-btn:checked ~ footer #sitpon, #eng-btn:checked ~ footer #eng { height: 28px; border: solid 2px #f33; }
+			#eng img {height: 22px;}
 			/* hide non-selected lang */
 			#sitpon-btn:not(:checked) ~ header .sitelen-pona, #sitpon-btn:not(:checked) ~ main .sitelen-pona, #eng-btn:not(:checked) ~ header .english, #eng-btn:not(:checked) ~ main .english { display:none; }
 		</style>
@@ -120,7 +121,7 @@
 
 		<footer>
 			<label id="sitpon" for="sitpon-btn">toki-pona &nbsp;sitelen pona</label>
-			<label id="eng" for="eng-btn"> 🇬🇧 English</label>
+			<label id="eng" for="eng-btn"> <img src="gb.png"> English</label>
 		</footer>
 	</body>
 </html>
