@@ -431,7 +431,7 @@ function populateTranslateHTML() {
 		headerRow.innerHTML = [
 			`<div onclick="defaultify(${i})" id="${i?'All">All':'Detect">Detect Script'}</div>`,
 			//`<div onclick="changeLang(${i}, false)" id="${i}:latin">Latin</div>`,
-			...data.filter(x=>x.showTrans).map((x,index)=>`<div id="${i}:${x.name}" onclick="changeLang(${i}, data[${index}])" style="${x.style}">${x.shortname}</div>`)
+			...data.map((x,index)=>x.showTrans?`<div id="${i}:${x.name}" onclick="changeLang(${i}, data[${index}])" style="${x.style}">${x.shortname}</div>`:'')
 		].join('\n')
 	})
 
