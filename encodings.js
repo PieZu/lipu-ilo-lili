@@ -525,4 +525,6 @@ function reload() {
 		showAllOutputs: true 
 	}
 	populateTranslateHTML()
+
+	document.getElementById('reload').hidden = true
 }
