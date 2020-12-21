@@ -12,8 +12,8 @@ class Encoding {
 		this.codelist = arg.codelist||Object.keys(this.demap).sort(byLength)
 		this.matchcode = new RegExp(this.codelist.map(x=>x.replace(specialchar, '\\$&')).join("|"), 'g')
 		
-		this.hideTrans = arg.hideTrans||false
-		this.hideList = arg.hideList||false
+		this.showTrans = !arg.hideTrans
+		this.showList = !arg.hideList
 		
 		this.url = arg.url||"#"
 		this.creator = arg.creator||arg.url||"unknown"
@@ -221,7 +221,7 @@ function generateTables(data) {
 	// list all words in dataset
 	wordList = []
 	data.forEach(corpus=>{
-		if (!corpus.hideList) {
+		if (corpus.showList) {
 			Object.keys(corpus.mapping).forEach(word=>{
 				if (!wordList.includes(word)) {
 					wordList.push(word)
@@ -241,8 +241,8 @@ function generateTables(data) {
 		
 		var offset = 1
 		for (let corpus = 0; corpus < data.length; corpus++) {
-			if (data[corpus].hideList) { offset-=1 }
-			else { table[i][corpus+offset] = data[corpus].mapping[word] }
+			if (data[corpus].showList) table[i][corpus+offset] = data[corpus].mapping[word] 
+			else offset-=1
 		}
 	}
 
@@ -278,14 +278,14 @@ function generateTables(data) {
 		tableElement.innerHTML = output
 		return tableElement
 	}
-	table = tableToElement(table, "table", data.filter(n=>!n.hideList).map(x=>x.style))
+	table = tableToElement(table, "table", data.filter(n=>n.showList).map(x=>x.style))
 
 	function onmove (e) {
 		if (e.target.tagName=="TD") {
 			[...table.children[0].children].forEach((colgroup,i)=>{
 				if (i===e.target.cellIndex) {
 					colgroup.style.backgroundColor = '#633'
-					let mapping = data.filter(x=>!x.hideList)[i-1] || {name:'',shortname:'source'}
+					let mapping = data.filter(x=>x.showList)[i-1] || {name:'',shortname:'source'}
 					table.rows[0].children[i].innerHTML = `<a href="#${mapping.name}">${mapping.shortname}</a>`
 				} else {
 					colgroup.style.backgroundColor = table.rows[0].children[i].innerHTML = ''
@@ -299,11 +299,13 @@ function generateTables(data) {
 	//make lookupsheet of unicode->tokipona
 	var lookup = {}
 	for (corpus = 0; corpus < data.length; corpus++) {
-		Object.keys(data[corpus].mapping).map(word=>{
-			var code = data[corpus].mapping[word]
-			if (!lookup[code]) { lookup[code] = [] }
-				lookup[code][corpus] = word
-		})
+			if (corpus.showList) {
+			Object.keys(data[corpus].mapping).map(word=>{
+				var code = data[corpus].mapping[word]
+				if (!lookup[code]) { lookup[code] = [] }
+					lookup[code][corpus] = word
+			})
+		}
 	}
 
 	// add any lookup codes with multiple decodings to array
@@ -354,7 +356,7 @@ function allTranslations(e) {
 	text = interpretInput(e)
 	poa = "<table>"
 	//poa+= "<tr><td>Latin</td><td>"+text+"</td></tr>"
-	for (dataset of data) {
+	for (dataset of data.filter(x=>x.showTrans)) {
 		poa+="<tr>"
 		poa+=`<td>${dataset.name}</td>`
 		poa+=`<td style="${dataset.style}">${dataset.encode(text).replace('\n','<br />')}</td>`
@@ -429,7 +431,7 @@ function populateTranslateHTML() {
 		headerRow.innerHTML = [
 			`<div onclick="defaultify(${i})" id="${i?'All">All':'Detect">Detect Script'}</div>`,
 			//`<div onclick="changeLang(${i}, false)" id="${i}:latin">Latin</div>`,
-			...data.filter(x=>!x.hideTrans).map((x,index)=>`<div id="${i}:${x.name}" onclick="changeLang(${i}, data[${index}])" style="${x.style}">${x.shortname}</div>`)
+			...data.filter(x=>x.showTrans).map((x,index)=>`<div id="${i}:${x.name}" onclick="changeLang(${i}, data[${index}])" style="${x.style}">${x.shortname}</div>`)
 		].join('\n')
 	})
 
@@ -454,7 +456,7 @@ function populateTranslateHTML() {
 
 FORCE_SPACES = false
 
-settings = {
+settings = { // for the translation
 	inputLanguage: false,
 	detectInputLanguage: true,	
 	outputLanguage: false,
@@ -462,5 +464,65 @@ settings = {
 }
 populateTranslateHTML()
 
+// credits & settings
+const EDITABLE_SETTINGS = [['show in table', 'showList'], ['show in translation box', 'showTrans']]
 credits = document.getElementById('credits')
-data.forEach(mapping=>credits.innerHTML+=`<div id="${mapping.name}">(${mapping.shortname}) <a href=${mapping.url}>${mapping.name}</a> ${mapping.creator=='unknown'?'':`made by <i>${mapping.creator}</i>`}</div>`)
+data.forEach(mapping=>{
+	let elm = document.createElement('div')
+	elm.id = mapping.name
+	
+	elm.append(`(${mapping.shortname}) `)
+
+	txt = document.createElement('a')
+	txt.href = mapping.url
+	txt.append( mapping.name )
+	elm.appendChild(txt)
+	
+	if (mapping.creator !== 'unknown') {
+		elm.append(' made by ')
+
+		txt = document.createElement('i')
+		txt.append(mapping.creator)
+		elm.appendChild(txt)
+	}
+	
+	let settings = document.createElement('div');
+
+	EDITABLE_SETTINGS.forEach(([caption, key],i)=>{
+		let checkbox = document.createElement('input')
+		checkbox.type = 'checkbox'
+		checkbox.defaultChecked = mapping[key]
+		checkbox.id = i+mapping.name
+		checkbox.addEventListener('change', changeSettings)
+
+		let label = document.createElement('label')
+		label.appendChild(checkbox)
+		label.append(caption)
+		label.for = i+mapping.name
+
+		settings.appendChild(label)
+		settings.appendChild(document.createElement('br'))
+	})
+	elm.appendChild(settings)
+	
+	credits.appendChild(elm)
+})
+
+function changeSettings (e) { // when the user changes some settings down the bottom
+	// extract what we changing
+	var [type, target] = [e.target.id[0], e.target.id.slice(1)]
+	// change it
+	data.find(x=>x.name==target)[EDITABLE_SETTINGS[type][1]] = e.target.type=="checkbox"?e.target.checked:e.target.value
+	// make the regenerate button visible
+	document.getElementById('reload').hidden = false // todo: if u undo settings changes so that overall nothing has changed maybe hide the button?
+}
+function reload() {
+	generateTables(data)
+	settings = { // reset translation so u arent like on a thing thats now hidden
+		inputLanguage: false,
+		detectInputLanguage: true,	
+		outputLanguage: false,
+		showAllOutputs: true 
+	}
+	populateTranslateHTML()
+}

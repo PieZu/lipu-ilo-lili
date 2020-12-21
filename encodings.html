@@ -84,6 +84,24 @@
 	 div:target {
 	 	background-color: #422;
 	 }
+
+	 button {
+	 	margin: 30px 30%;
+	 	width: 200px;
+	 	height: 50px;
+	 	background-color: #c33;
+	 	color: white;
+	 	border: none;
+	 	padding: 20px 30px 50px 30px;
+	 }
+	 button:hover {
+	 	background-color: #f44;
+	 }
+	 button:active {
+	 	transform: translateY(2px);
+	 	background-color: #a22;
+	 	color: #eee;
+	 }
 	</style>	
 <head>
 		<title>ilo pona</title>
@@ -136,7 +154,8 @@
 		<h2> Overlapping decodings </h2> 
 		<table id="dupes"></table>
 
-		<h1> credits </h1>
+		<h1> credits/settings </h1>
+		<button id="reload" hidden onclick="reload"> regenerate with modified settings </button>
 		<div id="credits">
 
 		<script src="./encodings.js"></script>
