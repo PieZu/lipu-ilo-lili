@@ -250,7 +250,20 @@ function generateTables(data) {
 	function tableToElement(table, id, columndata) {
 		console.log(columndata)
 		var tableElement = document.getElementById(id)
-		let output = '<tbody>'
+		let output = ''
+		if (columndata) {
+			output+='<colgroup><col>'
+			for (datum of columndata) {
+				if (datum) output+='<col style="'+datum+'">'
+				else output+='<col>'
+			}
+			output+='</colgroup>'
+		}
+		console.log(output)
+		
+		output+='<tbody>'
+
+		output += '<tbody>'
 		for (row = 0; row < table.length; row++) {
 			output+='<tr>'
 			for (column = 0; column < table[row].length; column++) {
@@ -263,9 +276,25 @@ function generateTables(data) {
 		output+='</tbody>'
 		
 		tableElement.innerHTML = output
+		return tableElement
 	}
-	tableToElement(table, "table", data.filter(n=>!n.hideList).map(x=>x.style))
+	table = tableToElement(table, "table", data.filter(n=>!n.hideList).map(x=>x.style))
 
+	function onmove (e) {
+		if (e.target.tagName=="TD") {
+			[...table.children[0].children].forEach((colgroup,i)=>{
+				if (i===e.target.cellIndex) {
+					colgroup.style.backgroundColor = '#633'
+					let mapping = data.filter(x=>!x.hideList)[i-1] || {name:'',shortname:'source'}
+					table.rows[0].children[i].innerHTML = `<a href="#${mapping.name}">${mapping.shortname}</a>`
+				} else {
+					colgroup.style.backgroundColor = table.rows[0].children[i].innerHTML = ''
+				}
+			})
+		}
+	}
+	table.onmouseover = table.onclick = onmove
+	table.onmouseleave = ()=>[...table.children[0].children].forEach((colgroup,i)=>{colgroup.style.backgroundColor = table.rows[0].children[i].innerHTML = ''})
 
 	//make lookupsheet of unicode->tokipona
 	var lookup = {}
