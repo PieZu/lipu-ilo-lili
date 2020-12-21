@@ -102,7 +102,26 @@
 	 	background-color: #a22;
 	 	color: #eee;
 	 }
-	</style>	
+
+	/* collapsable headers */
+	h1 {margin-left: -20px;}
+	h2::before, h1::before {
+		display:inline-block;
+		content: "▾";
+  		transform: rotate(0deg);
+  		transition: transform .3s;
+  	}
+  	section {
+  		position:static;
+  		width: 100%;
+  		transition: transform .3s, width .3s, opacity .3s;
+  	}
+	body>input { display:none; }
+
+  	/* hide the sections when headers collapsed */
+	body>input:checked + label h1::before, body>input:checked + label h2::before { transform: rotate(-90deg); }
+	body>input:checked + label + section { position:absolute; width:0px; opacity: 0%; transform: translate(0, -100%) scaleY(0);} /* think this might still be seen for screen readers, but hey the h1s should still be anchorable right?.. also the opacity (well, mainly the scale but thats needed so u can click on the above section) makes it lagggy but it looks ugly w/o it, :shrug: */
+	</style>
 <head>
 		<title>ilo ante</title>
 		<meta charset="utf-8">
@@ -114,48 +133,52 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	 </head>
 	<body>
-		<h1> Encode/Decode </h1>
-		<div class="translatebox">
+		<input type="checkbox" id="encode">
+		<label for="encode"><h1> Encode/Decode </h1></label>
+		<section>
+			<div class="translatebox">
 
-			<div class="translationinput">
-				<div class="translationheader">
-					<div> Detect Script </div>
-					<div class="selected"> Latin </div>
-					<div> Sitelen Pona </div>
+				<div class="translationinput">
+					<div class="translationheader">
+						<div> Detect Script </div>
+						<div class="selected"> Latin </div>
+						<div> Sitelen Pona </div>
+					</div>
+					<textarea id="dynamicinput"></textarea>
+					<span id="suggestion"></span>
 				</div>
-				<textarea id="dynamicinput"></textarea>
-				<span id="suggestion"></span>
-			</div>
-			
-			<div class="translationoutput">
-				<div class="translationheader">
-					<div class="selected"> ALL </div>
-					<div> Latin </div>
-					<div> Sitelen Pona </div>
+				
+				<div class="translationoutput">
+					<div class="translationheader">
+						<div class="selected"> ALL </div>
+						<div> Latin </div>
+						<div> Sitelen Pona </div>
+					</div>
+					<div id="output"></div>
 				</div>
-				<div id="output"></div>
+
 			</div>
+		</section>
 
-		</div>
-
-		<header>
-			<h1> Unicode mappings </h1> 
-		</header>
-	
-		<!-- <div id="credits"> 
-			loading...
-		</div> -->
-			
-
-		<table id="table"></table> 
+		<input type="checkbox" id="chart">	
+		<label for="chart"><header><h1> Unicode mappings </h1></header></label>
+		<section>
+			<table id="table"></table> 
+		</section>
 		
-		<h2> Overlapping decodings </h2> 
-		<table id="dupes"></table>
-
-		<h1> credits/settings </h1>
-		<button id="reload" hidden onclick="reload()"> regenerate with modified settings </button>
-		<div id="credits">
-
+		<input type="checkbox" id="overlaps">
+		<label for="overlaps"><h2> Overlapping decodings </h2></label>
+		<section>
+			<table id="dupes"></table>
+		</section>
+		
+		<input type="checkbox" id="settings">
+		<label for="settings"><h1> credits/settings </h1></label>
+		<section>
+			<button id="reload" hidden onclick="reload()"> regenerate with modified settings </button>
+			<div id="credits">
+		</div>
+		
 		<script src="./encodings.js"></script>
 
 	</body></html>
