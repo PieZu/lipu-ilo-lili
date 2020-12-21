@@ -14,23 +14,29 @@
 	 }
 	 .translationinput, .translationoutput {
 	 	padding:10px;
-	 	width:40%;
-		display: inline-grid;
+		display: inline-flex;
+		flex-direction: column;
 		background-color: #333;
+	 	width:40%;
 		height:200px;
+		resize:both;
+		overflow: hidden;
+		margin-bottom: 5px;
 	 }
 
 	 .translationinput textarea, .translationoutput #output {
-	 	overflow: auto;
+	 	overflow: visible auto;
+	 	height: 100%;
+	 	width:100%;
 	 }
 
 	 textarea {
-	 	height: 120px;
 		border: 0;
 		resize: none;
 		background-color: #333;
 		color: white;
-		font-family: helvetica, arial, sans-serif; 
+		font-family: helvetica, arial, sans-serif;
+		float:top;
 	}
 	 
 	 .translationheader {
@@ -40,6 +46,7 @@
 	 	overflow: scroll hidden;
 	 	display: flex;
 	 	scrollbar-width: none;
+	 	margin-bottom: 8px;
 	 }
 	 .translationheader::-webkit-scrollbar {
   		height: 0px;
@@ -62,10 +69,6 @@
 	 .selected {
 	 	border-bottom: 2px solid #f44;
 	 	color: #f66;
-	 }
-
-	 #output {
-	 	height:120px;
 	 }
 
 	 #suggestion {
