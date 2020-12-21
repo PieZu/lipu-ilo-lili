@@ -117,13 +117,13 @@
   	section {
   		position:static;
   		width: 100%;
-  		transition: transform .3s, width .3s, opacity .3s;
+  		transition: transform .3s, width .3s, opacity .3s ease-in-out;
   	}
 	body>input { display:none; }
 
   	/* hide the sections when headers collapsed */
 	body>input:checked + label h1::before, body>input:checked + label h2::before { transform: rotate(-90deg); }
-	body>input:checked + label + section { position:absolute; width:0px; opacity: 0%; transform: translate(0, -100%) scaleY(0);} /* think this might still be seen for screen readers, but hey the h1s should still be anchorable right?.. also the opacity (well, mainly the scale but thats needed so u can click on the above section) makes it lagggy but it looks ugly w/o it, :shrug: */
+	body>input:checked + label + section { position:absolute; width:0px; opacity: 0%; transform: translate(0, -50%) scaleY(0);}
 	
 	</style>
 	<head>
