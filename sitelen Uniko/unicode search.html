@@ -1,0 +1,200 @@
+<html>
+	<head>
+		<style>
+			td {
+				padding:0;
+				margin:0;
+			}
+			button {
+				padding:3px;
+				border: 2px solid gray;
+			}
+			body {
+				background-color: #333
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas" width=150 height=150></canvas>
+		<table id="manual"></table>
+		<div id="glyph" style="font-size: 50px"></div>
+		<script>
+			var globalwidth = 50
+			var globalheight = 50
+			var filter = new Array(globalheight*globalwidth)
+			var inter
+
+			canvas = document.getElementById("canvas")
+			ctx = canvas.getContext("2d")
+
+			ctx.textBaseline = "top"
+			ctx.imageSmoothingEnabled = false
+
+			var results = []
+
+			ctx.font = "arial 20px"
+
+			function render(txt, font) {
+				ctx.clearRect(0,0,150,150)
+				ctx.measureText(txt)
+				if (font) ctx.font = font
+				ctx.fillText(txt, 0,0);
+				return txt
+			}
+
+			function getRelevantData(txt) {
+				metr = ctx.measureText(txt)
+				stats = [-metr.actualBoundingBoxLeft, -metr.actualBoundingBoxAscent, metr.actualBoundingBoxRight+metr.actualBoundingBoxLeft, metr.actualBoundingBoxAscent+metr.actualBoundingBoxDescent]
+//						.map(x=>Math.round(x))
+				if (stats[2]>0) {
+					data = ctx.getImageData(...stats).data.buffer
+					arr = new Uint32Array(data)
+				return [arr, Math.floor(stats[2])]
+				} else  
+				return [[false, false], 1]
+			}
+
+			function display(txt) {
+				// just for checking a glyph in the old console
+				render(txt)
+				var [data, width] = getRelevantData(txt)
+				console.log(humanReadable(binarised(data), width))
+			}
+
+			function normalise(bufferised, width, gwidth, gheight) {
+				height = bufferised.length / width
+				gwidth = gwidth||100
+				gheight = gheight||gwidth
+				wratio = width / gwidth
+				hratio = height/ gheight
+
+				full = []
+
+				i=0
+				for (y=0; y<gheight; y++) {
+					for (x=0; x<gwidth; x++) {
+						full.push( bufferised[Math.floor(x*wratio) + Math.floor(y*hratio)*width] )
+					}
+				}
+
+				return full
+			}
+
+			function bufferised(buffer32) {
+				// would love if there was  a way to directly edit an ArrayBuffer or make a Uint1Array, but theres not and i dont trust myself to do the bitwise extraction stuff properly so we just use an array of bools and hope js saves it in a memory efficient way
+				var b = []
+				for (i = 0; i < buffer32.length; i++) {
+					b[i] = buffer32[i]?true:false
+				}
+				return b
+			}
+
+			function digitise(txt) {
+				// extract buffer from txt
+				var [img, width] = getRelevantData(render(txt))
+				return [bufferised(binarised(img)), width]
+			}
+
+			function binarised(buffer32) {
+				return buffer32.map(x=>!!x)
+			}
+			function humanReadable(binary, w) {
+				var all = []
+				var str
+				for (i=0; i<=binary.length; i++) {
+					if (!(i%(w))) {
+						all.push(str)
+						str = ""
+					}
+					str+=binary[i]*1  
+				}
+				return all.join("\n")
+			}
+
+			function generateHTML(wid, hei) {
+				wid = wid||globalwidth
+				hei = hei||globalheight
+				html = "<table>"
+				for (y = 0; y<hei; y++) {
+					html+="<tr>"
+					for (x = 0; x<wid; x++) {
+						html+="<td><button id='but"+(y*wid+x)+"' onclick='toggle("+(y*wid+x)+")'></td>"
+					}
+					html+="</tr>"
+				}
+				html += "</table>"
+				document.getElementById("manual").innerHTML = html
+			}
+
+			function toggle(num) {
+				i = document.getElementById("but"+num)
+				switch (filter[num]) {
+					case undefined:
+						filter[num] = true
+						i.style.backgroundColor = "red"
+						break;
+					case true:
+						filter[num] = false
+						i.style.backgroundColor = "black"
+						break;
+					case false:
+						delete filter[num]
+						i.style.backgroundColor = ""
+				}
+				results = [... allarrays.entries()].filter(g=> matchFilter(g[1]))
+			}
+			generateHTML()
+			allarrays = new Map()
+			function scan(codes){
+				for (code of codes) {
+					let th = normalise(... digitise(String.fromCharCode(code)), globalwidth, globalheight)
+					allarrays.set(code, th)
+				}
+
+				results = [... allarrays]
+				iter = 0
+				clearInterval(inter)
+				inter = setInterval(()=>{
+					if (results.length) showResult(... results[++iter%results.length])
+					else showResult()
+				}, 500)
+
+			}
+
+			function matchFilter(normalisedarray) {
+				for (index in filter) {
+					document.getElementById("but"+index).style.borderColor="green"
+					//console.log(filter[index])
+					//console.log(normalisedarray[index])
+					if (filter[index]!==normalisedarray[index]) return false
+				}
+				return true
+			}
+
+			function showResult(code, array) {
+				if (array) {
+					for (i=0; i<array.length; i++) {
+						let b = document.getElementById("but"+i)
+						if (b) b.style.borderColor = ["black", "red"][array[i]*1]
+					}
+				} else {
+					console.log("no result found")
+					for (i=0; i<globalwidth*globalheight; i++) {
+						let b = document.getElementById("but"+i)
+						if (b) b.style.borderColor = "gray"
+					}
+				}
+				document.getElementById("glyph").innerText=String.fromCharCode(code)
+			}
+
+			async function addFont(fontname, fontpath) {
+				font = new FontFace(fontname, "url('"+fontpath+"')")
+				await font.load();
+				// add font to document
+ 				document.fonts.add(font);
+ 				console.log(fontname+' loaded!')
+ 				render("A", "50px "+fontname)
+			}
+		</script>
+	</body>
+</html>
