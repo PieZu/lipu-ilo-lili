@@ -14,6 +14,7 @@ class Encoding {
 		
 		this.showTrans = !arg.hideTrans
 		this.showList = !arg.hideList
+		this.detectTrans = !arg.hideDetect
 		
 		this.url = arg.url||"#"
 		this.creator = arg.creator||arg.url||"unknown"
@@ -89,6 +90,7 @@ const data = [
 	new Encoding({
 		name: "wawa pona",
 		creator: "jan Pitelo",
+		hideDetect: true,
 		url: "http://thaiyoo.com/tokipona/alfapona.htm",
 		mapping: {a: "ղ", akesi: "Ꮝ", ala: "x", alasa: "Ꮅ", ali: "a", anpa: "Ꭷ", ante: "и", anu: "u", awen: "δ", e: "e", en: "ε", esun: "ე", ijo: "i", ike: "h", ilo: "ι", insa: "ქ", jaki: "կ", jan: "j", jelo: "ւ", jo: "y", kala: "չ", kalama: "ֆ", kama: "я", kasi: "ψ", ken: "k", kepeken: "q", kili: "ვ", kin: "ղ", kipisi: "э", kiwen: "ლ", ko: "უ", kon: "γ", kule: "ჰ", kulupu: "պ", kute: "б", la: "ჲ", lape: "ի", laso: "Ꮿ", lawa: "г", len: "ტ", lete: "ն", li: "l", lili: "դ", linja: "ს", lipu: "β", loje: "ზ", o: "ծ", lon: "o", luka: "რ", lukin: "φ", lupa: "Þ", ma: "թ", mama: "ա", mani: "ი", meli: "ω", mi: "m", mije: "բ", moku: "κ", moli: "մ", monsi: "Ꮧ", mu: "տ", mun: "ռ", musi: "μ", mute: "g", namako: "Ȣ", nanpa: "ê", nasa: "ξ", nasin: "д", nena: "ш", ni: "n", nimi: "շ", noka: "Ꭴ", oko: "Ꮹ", olin: "ճ", ona: "v", open: "წ", pakala: "დ", pali: "զ", palisa: "ბ", pan: "ю", pana: "ր", pi: "π", pilin: "f", pimeja: "ж", pini: "p", pipi: "ც", poka: "և", poki: "გ", pona: "b", pu: "ო", sama: "փ", seli: "ք", selo: "Ꭳ", seme: "z", sewi: "ը", sijelo: "ե", sike: "θ", sin: "σ", sina: "s", sinpin: "Ꭽ", sitelen: "з", sona: "ц", soweli: "ζ", suli: "Ꭿ", suno: "վ", supa: "ფ", suwi: "λ", tan: "d", taso: "c", tawa: "t", telo: "τ", tenpo: "ժ", toki: "ч", tomo: "ъ", tu: "л", unpa: "მ", uta: "ձ", utala: "ջ", walo: "н", wan: "η", waso: "ა", wawa: "α", weka: "й", wile: "w"}
 	}),
@@ -356,7 +358,7 @@ document.getElementById("dynamicinput").onkeyup = newInput
 
 function detectLanguage(text) {
 	if (text == "") { return [[data[0],1]]}	
-	return data.map(mapping=>{return [mapping, mapping.likelyhood(text.replace(/[ \t.,!?\n]/g, ""))]}).sort((a,b)=>b[1]-a[1])
+	return data.filter(mapping=>mapping.detectTrans).map(mapping=>{return [mapping, mapping.likelyhood(text.replace(/[ \t.,!?\n]/g, ""))]}).sort((a,b)=>b[1]-a[1])
 }
 
 function allTranslations(e) {
@@ -473,7 +475,7 @@ settings = { // for the translation
 populateTranslateHTML()
 
 // credits & settings
-const EDITABLE_SETTINGS = [['show in table', 'showList'], ['show in translation box', 'showTrans']]
+const EDITABLE_SETTINGS = [['show in table', 'showList'], ['show in translation box', 'showTrans'], ['allow to detect language', 'detectTrans']]
 credits = document.getElementById('credits')
 data.forEach(mapping=>{
 	let elm = document.createElement('div')
