@@ -164,6 +164,8 @@
 				</div>
 
 			</div>
+			<label for="strip whitespace"><input type="checkbox" id="strip whitespace" onchange="settings.stripWhitespace=this.checked; input.onkeyup({target: input})">Strip whitespace?</label>
+			<label for="force spaces"><input type="checkbox" id="force spaces" onchange="settings.forceSpaces=this.checked; input.onkeyup({target: input})" checked>Force spaces?</label>
 		</section>
 
 		<input type="checkbox" id="chart">	

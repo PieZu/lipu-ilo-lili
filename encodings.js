@@ -26,7 +26,7 @@ class Encoding {
 	
 	qencode = text => text.replace(this.matchword, match=>this.mapping[match])
 	encode = function(txtarray) {
-		return txtarray.map(word => this.mapping[word] || word).join('')
+		return txtarray.map(word => this.mapping[word] || word).join(settings.forceSpaces?'  ':'')
 	}
 	//decode = text => text.replace(this.matchcode, match=>this.demap[match])
 	decode = function(text){
@@ -34,7 +34,6 @@ class Encoding {
 		indx = 0,
 		iter = text.matchAll(this.matchcode)
 		for (let match=iter.next(); !match.done; match=iter.next()) {
-			//console.log(match)
 			if (match.value.index > indx) {
 				out.push(text.slice(indx, match.value.index))
 				indx = match.value.index
@@ -43,6 +42,7 @@ class Encoding {
 			indx += match.value[0].length
 		}
 		out.push(text.slice(indx))
+		if (settings.stripWhitespace) out = out.filter(word=>/[^ \t]/.test(word))
 		return out
 	}
 	likelyhood = function(text){return 1-(text.replace(this.matchcode, "").length/text.length)}
@@ -120,7 +120,7 @@ const data = [
 		name: "unicode keyboard",
 		creator: "jan Sala",
 		url: "https://discord.com/channels/301377942062366741/375591429608570881/722372140527124570",
-		mapping: {a: '!', akesi: 'Ӫ', ala: 'X', alasa: 'Ð', ale: '∞', ali: '∞', anpa: 'Џ', ante : 'N', anu: 'Y', awen: 'λ', e: '»', en: '+', esun: '§', ijo: 'O', ike: '∩', ilo: '中', insa: 'Ŀ', jaki: '&', jan: 'Q', jelo: 'Å', jo: '¿', kala: '∝', kalama: 'Ű', kama: '\\', kasi: 'Ï', ken: 'K', kepeken: '円', kili: 'Ó', kiwen: 'Ѫ', ko: 'ß', kon: '∫', kule: 'A', kupulu: '∴', kute: '€', la: ')', lape: '⟜', laso: 'Ä', lawa: 'θ', len: 'ロ', lete: '⚹', li: '›', lili: 'v', linja: '~', lipu: 'ㅁ', lon: '∸', loje: 'Ă', luka: 'n', lukin: '⊙', lupa: 'U', ma: '⊕', mama: 'Ç', mani: 'Ơ', meli: 'Ô', mi: 'p', mije: 'Ω', moli: 'Ø', monsi: 'ㅓ', mu: '木', mun: '☾', musi: '☋', mute: '3', nanpa: '#', nasa: '@', nasin: '∤', nena: '^', ni: '↓', nimi: '[ ]', noka: 'Б', o: '⫰', olin: 'ε', ona: 'σ', open: 'ㅂ', pakala: '∑', pali: 'ń', palisa: '|', pan: '⚶', pana: 'ñ', pi: 'L', pilin: '♡', pimeja: 'Ā', pini: 'エ', pipi: '¥', poka: 'Ҧ', poki: '∐', pona: '∪', pu: '⊡', sama: '=', seli: '⚟', selo: 'Ш', seme: '?', sewi: '√', sijelo: 'Π', sike: '⊙', sin: '±', sina: 'b', sinpin: 'ㅏ', sitelen: '…', sona: '点', soweli: '⪾', suli: 'V', suno: '¤', supa: 'ㅠ', suwi: 'ツ', tan: '↶', taso: '⊢', tawa: '/', telo: '≈', tenpo: '⚆', toki: 'Ő', tomo: '个', tu: '2', unpa: '⚭', uta: 'Ụ', utala: '⚔', walo: 'Ǎ', wan: '1', wawa: '⒪', weka: '⛶', wile: 'ω'}
+		mapping: {a: '!', akesi: 'Ӫ', ala: 'X', alasa: 'Ð', ale: '∞', ali: '∞', anpa: 'Џ', ante : 'N', anu: 'Y', awen: 'λ', e: '»', en: '+', esun: '§', ijo: 'O', ike: '∩', ilo: '中', insa: 'Ŀ', jaki: '&', jan: 'Q', jelo: 'Å', jo: '¿', kala: '∝', kalama: 'Ű', kama: '\\', kasi: 'Ï', ken: 'K', kepeken: '円', kili: 'Ó', kiwen: 'Ѫ', ko: 'ß', kon: '∫', kule: 'A', kulupu: '∴', kute: '€', la: ')', lape: '⟜', laso: 'Ä', lawa: 'θ', len: 'ロ', lete: '⚹', li: '›', lili: 'v', linja: '~', lipu: 'ㅁ', lon: '∸', loje: 'Ă', luka: 'n', lukin: '⊙', lupa: 'U', ma: '⊕', mama: 'Ç', mani: 'Ơ', meli: 'Ô', mi: 'p', mije: 'Ω', moli: 'Ø', monsi: 'ㅓ', mu: '木', mun: '☾', musi: '☋', mute: '3', nanpa: '#', nasa: '@', nasin: '∤', nena: '^', ni: '↓', nimi: '[ ]', noka: 'Б', o: '⫰', olin: 'ε', ona: 'σ', open: 'ㅂ', pakala: '∑', pali: 'ń', palisa: '|', pan: '⚶', pana: 'ñ', pi: 'L', pilin: '♡', pimeja: 'Ā', pini: 'エ', pipi: '¥', poka: 'Ҧ', poki: '∐', pona: '∪', pu: '⊡', sama: '=', seli: '⚟', selo: 'Ш', seme: '?', sewi: '√', sijelo: 'Π', sike: '⊙', sin: '±', sina: 'b', sinpin: 'ㅏ', sitelen: '…', sona: '点', soweli: '⪾', suli: 'V', suno: '¤', supa: 'ㅠ', suwi: 'ツ', tan: '↶', taso: '⊢', tawa: '/', telo: '≈', tenpo: '⚆', toki: 'Ő', tomo: '个', tu: '2', unpa: '⚭', uta: 'Ụ', utala: '⚔', walo: 'Ǎ', wan: '1', wawa: '⒪', weka: '⛶', wile: 'ω'}
 	}),
 	new Encoding({
 		name: "sitelen pona ascii",
@@ -156,7 +156,7 @@ const data = [
 		name: "sitelen Lemon",		shortname: "言汝",
 		creator: "u/aidungeon-neoncat",
 		url: "https://www.reddit.com/r/tokipona/comments/j6nvxd/sitelen_lemon_an_aesthetically_consistent/",
-		mapping: {a: "亞", akesi: "龟", ala: "不", alasa: "集", ale: "全", anpa: "下", ante: "差", anu: "或", awen: "停", e: "把", en: "又", esun: "市", ijo: "件", ike: "惡", ilo: "具", insa: "内", jaki: "汚", jan: "人", jelo: "黃", jo: "有", kala: "魚", kalama: "音", kama: "化", kasi: "艸", ken: "可", kepeken: "用", kili: "果", kin: "亦", kipisi: "切", kiwen: "石", ko: "膏", kon: "氣", kule: "色", kute: "聞", kulupu: "會", la: "於", lape: "休", laso: "靑", lawa: "首", len: "巾", lete: "冷", li: "是", lili: "小", linja: "糸", lipu: "葉", loje: "赤", lon: "在", luka: "手", lukin: "見", lupa: "孔", ma: "土", mama: "母", mani: "貝", meli: "女", mi: "我", mije: "男", moku: "食", moli: "死", monsi: "後", mu: "牟", mun: "月", mute: "多", namako: "加", nanpa: "番", nasa: "狂", nena: "凸", ni: "此", nimi: "名", noka: "足", o: "喂", oko: "目", olin: "愛", ona: "其", open: "開", pakala: "破", pali: "行", palisa: "棒", pan: "穀", pana: "給", pata: "氏", pi: "之", pilin: "心", pimeja: "黑", pini: "末", pipi: "蟲", poka: "伴", poki: "器", pona: "好", sama: "同", seli: "火", seme: "何", sewi: "上", sijelo: "身", sike: "圓", sin: "新", sina: "汝", sinpin: "前", sitelen: "圖", sona: "知", soweli: "獸", suli: "大", suno: "日", supa: "面", suwi: "甜", tan: "因", taso: "只", telo: "水", tenpo: "時", toki: "言", tomo: "室", tu: "二", unpa: "性", uta: "口", utala: "爭", walo: "白", wan: "一", waso: "鳥", wawa: "力", weka: "無", wile: "要"} // hand transcribed
+		mapping: {a: "亞", akesi: "龟", ala: "不", alasa: "集", ale: "全", anpa: "下", ante: "差", anu: "或", awen: "停", e: "把", en: "又", esun: "市", ijo: "件", ike: "惡", ilo: "具", insa: "内", jaki: "汚", jan: "人", jelo: "黃", jo: "有", kala: "魚", kalama: "音", kama: "化", kasi: "艸", ken: "可", kepeken: "用", kili: "果", kin: "亦", kipisi: "切", kiwen: "石", ko: "膏", kon: "氣", kule: "色", kute: "聞", kulupu: "會", la: "於", lape: "休", laso: "靑", lawa: "首", len: "巾", lete: "冷", li: "是", lili: "小", linja: "糸", lipu: "葉", loje: "赤", lon: "在", luka: "手", lukin: "見", lupa: "孔", ma: "土", mama: "母", mani: "貝", meli: "女", mi: "我", mije: "男", moku: "食", moli: "死", monsi: "後", mu: "牟", mun: "月", mute: "多", namako: "加", nanpa: "番", nasa: "狂", nasin: "道", nena: "凸", ni: "此", nimi: "名", noka: "足", o: "喂", oko: "目", olin: "愛", ona: "其", open: "開", pakala: "破", pali: "行", palisa: "棒", pan: "穀", pana: "給", pata: "氏", pi: "之", pilin: "心", pimeja: "黑", pini: "末", pipi: "蟲", poka: "伴", poki: "器", pona: "好", sama: "同", seli: "火", seme: "何", sewi: "上", sijelo: "身", sike: "圓", sin: "新", sina: "汝", sinpin: "前", sitelen: "圖", sona: "知", soweli: "獸", suli: "大", suno: "日", supa: "面", suwi: "甜", tan: "因", taso: "只", telo: "水", tenpo: "時", toki: "言", tomo: "室", tu: "二", unpa: "性", uta: "口", utala: "爭", walo: "白", wan: "一", waso: "鳥", wawa: "力", weka: "無", wile: "要"} // hand transcribed
 	}),
 	new Encoding({
 		name: "nimi tu",
@@ -360,7 +360,7 @@ function detectLanguage(text) {
 }
 
 function allTranslations(e) {
-	text = interpretInput(e).slice(0,-1)
+	text = interpretInput(e)
 	poa = "<table>"
 	//poa+= "<tr><td>Latin</td><td>"+text+"</td></tr>"
 	if (text.length>0) {
@@ -395,8 +395,7 @@ function interpretInput(e) {
 		//else	hint.innerHTML = `Did you mean to translate from <a onclick="changeLang(0, false)">Latin</a>`
 	}
 
-	if (settings.inputLanguage) return settings.inputLanguage.decode(plaintext, FORCE_SPACES?' ':'')
-	return plaintext //no input language; latin
+	return settings.inputLanguage.decode(plaintext)
 }
 
 function changeLang(isOutputTable, newLang) {
@@ -463,13 +462,13 @@ function populateTranslateHTML() {
 	input.onkeyup({target: input})
 }
 
-FORCE_SPACES = false
-
 settings = { // for the translation
 	inputLanguage: false,
 	detectInputLanguage: true,	
 	outputLanguage: false,
-	showAllOutputs: true 
+	showAllOutputs: true,
+	forceSpaces: document.getElementById("force spaces").checked,
+	stripWhitespace: document.getElementById("strip whitespace").checked
 }
 populateTranslateHTML()
 
@@ -531,7 +530,9 @@ function reload() {
 		inputLanguage: false,
 		detectInputLanguage: true,	
 		outputLanguage: false,
-		showAllOutputs: true 
+		showAllOutputs: true,
+		forceSpaces: document.getElementById("force spaces").checked,
+		stripWhitespace: document.getElementById("strip whitespace").checked
 	}
 	populateTranslateHTML()
 
